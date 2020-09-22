@@ -239,9 +239,7 @@ static int msm_config_group_get(struct pinctrl_dev *pctldev,
 	uint32_t hw_platform = get_hw_version_platform();
 
 	/* bypass the NFC SPI gpios */
-	if (hw_platform == HARDWARE_PLATFORM_GRUS ||
-	    hw_platform == HARDWARE_PLATFORM_PYXIS ||
-	    hw_platform == HARDWARE_PLATFORM_VELA) {
+	if (hw_platform == HARDWARE_PLATFORM_PYXIS) {
 		if (group < 4)
 			return 0;
 	}
@@ -523,9 +521,7 @@ static void msm_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
 
 	for (i = 0; i < chip->ngpio; i++, gpio++) {
 		/* bypass the NFC SPI gpios */
-		if (get_hw_version_platform() == HARDWARE_PLATFORM_GRUS ||
-		    get_hw_version_platform() == HARDWARE_PLATFORM_PYXIS ||
-		    get_hw_version_platform() == HARDWARE_PLATFORM_VELA) {
+		if (get_hw_version_platform() == HARDWARE_PLATFORM_PYXIS) {
 			if (i < 4)
 				continue;
 		}

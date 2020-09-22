@@ -2,7 +2,6 @@
  * cs35l41.c -- CS35l41 ALSA SoC audio driver
  *
  * Copyright 2018 Cirrus Logic, Inc.
- * Copyright (C) 2019 XiaoMi, Inc.
  *
  * Author:	David Rhodes	<david.rhodes@cirrus.com>
  *		Brian Austin	<brian.austin@cirrus.com>
@@ -1063,7 +1062,7 @@ static int cs35l41_pcm_hw_params(struct snd_pcm_substream *substream,
 				 struct snd_soc_dai *dai)
 {
 	struct cs35l41_private *cs35l41 = snd_soc_codec_get_drvdata(dai->codec);
-	int i, tclk;
+	int i;
 	unsigned int rate = params_rate(params);
 	u8 asp_width, asp_wl;
 
@@ -1078,6 +1077,7 @@ static int cs35l41_pcm_hw_params(struct snd_pcm_substream *substream,
 	asp_wl = params_width(params);
 	asp_width = params_physical_width(params);
 
+	cs35l41_codec_set_sysclk(dai->codec, 0, 0, 2*rate*asp_width, 0);
 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
 		regmap_update_bits(cs35l41->regmap, CS35L41_SP_FORMAT,
 				CS35L41_ASP_WIDTH_RX_MASK,
@@ -1105,10 +1105,6 @@ static int cs35l41_pcm_hw_params(struct snd_pcm_substream *substream,
 				CS35L41_ASP_TX_WL_MASK,
 				asp_wl << CS35L41_ASP_TX_WL_SHIFT);
 	}
-
-	tclk = rate * asp_width * params_channels(params);
-	if ((cs35l41->clksrc == CS35L41_PLLSRC_SCLK) && (cs35l41->sclk != tclk))
-		cs35l41_codec_set_sysclk(dai->codec, 0, 0, tclk, 0);
 
 	return 0;
 }
@@ -1145,6 +1141,7 @@ static int cs35l41_pcm_startup(struct snd_pcm_substream *substream,
 
 	cs35l41_set_dai_fmt(dai, SND_SOC_DAIFMT_CBS_CFS|SND_SOC_DAIFMT_I2S);
 	cs35l41_codec_set_sysclk(codec, 0, 0, 1536000, 0);
+
 #if 0
 	if (substream->runtime)
 		return snd_pcm_hw_constraint_list(substream->runtime, 0,

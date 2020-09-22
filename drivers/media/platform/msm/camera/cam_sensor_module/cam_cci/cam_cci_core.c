@@ -541,7 +541,7 @@ static int32_t cam_cci_set_clk_param(struct cci_device *cci_dev,
 		&cci_dev->soc_info;
 	void __iomem *base = soc_info->reg_map[0].mem_base;
 
-	if ((hw_version_platform == HARDWARE_PLATFORM_PYXIS) || (hw_version_platform == HARDWARE_PLATFORM_VELA)) {
+	if (hw_version_platform == HARDWARE_PLATFORM_PYXIS) {
 		if (g_operation_mode == 0x8006) {
 			i2c_freq_mode = I2C_FAST_PLUS_MODE;
 			CAM_DBG(CAM_CCI, "face_unlock mode, set i2c_freq_mode to fast plus mode.");

@@ -62,10 +62,10 @@
 		rgltr-min-voltage = <3312000>;
 		rgltr-max-voltage = <3312000>;
 		rgltr-load-current = <0>;
-		gpios = <&pm660l_gpios 4 0>; //LDO
+		gpios = <&pm660l_gpios 4 0>; /* LDO */
 		gpio-vaf  = <0>;
 		gpio-req-tbl-num = <0>;
-		gpio-req-tbl-flags = <0>; //1-input,0-output
+		gpio-req-tbl-flags = <0>; /* 1-input,0-output */
 		gpio-req-tbl-label = "CAM_VAF";
 		status = "ok";
 	};
@@ -117,9 +117,9 @@
 		pinctrl-1 = <&pyxis_cam_mclk1_suspend
 			&pyxis_cam_rear_aux_suspend
 			&pyxis_cam_rear_aux_ldo_disable>;
-		gpios = <&tlmm 14 0>, //mclk
-			  <&tlmm 23 0>, //rst
-			  <&pm660l_gpios 3 0>; //vana
+		gpios = <&tlmm 14 0>, /* mclk */
+			  <&tlmm 23 0>, /* rst */
+			  <&pm660l_gpios 3 0>; /* vana */
 		gpio-reset = <1>;
 		gpio-vana = <2>;
 		gpio-req-tbl-num = <0 1 2>;
@@ -187,8 +187,8 @@
 		actuator-src = <&actuator_rear>;
 		eeprom-src = <&eeprom_rear>;
 		cam_vio-supply = <&pm660_l11>;
-		cam_vana-supply = <&pm660_s4>; //<AVDD1.8>
-		cam_v_custom1-supply = <&pm660l_bob>; //<AVDD2.8>
+		cam_vana-supply = <&pm660_s4>; /* <AVDD1.8> */
+		cam_v_custom1-supply = <&pm660l_bob>; /* <AVDD2.8> */
 		cam_vdig-supply = <&pm660_s6>;
 		cam_clk-supply = <&titan_top_gdsc>;
 		regulator-names = "cam_vio", "cam_vana", "cam_v_custom1", "cam_vdig",
@@ -205,13 +205,13 @@
 		pinctrl-1 = <&pyxis_cam_mclk0_suspend
 			&pyxis_cam_rear_suspend
 			&pyxis_cam_rear_ldo_disable>;
-		gpios = <&tlmm 13 0>, //mclk
-			  <&tlmm 30 0>, //rst
-			  <&pm660l_gpios 2 0>; //vdig & vana1.8 & vana2.8
+		gpios = <&tlmm 13 0>, /* mclk */
+			  <&tlmm 30 0>, /* rst */
+			  <&pm660l_gpios 2 0>; /* vdig & vana1.8 & vana2.8 */
 		gpio-reset = <1>;
 		gpio-vdig = <2>;
 		gpio-req-tbl-num = <0 1 2>;
-		gpio-req-tbl-flags = <1 0 0>; //1-input,0-output
+		gpio-req-tbl-flags = <1 0 0>; /* 1-input,0-output */
 		gpio-req-tbl-label = "CAMIF_MCLK0",
 			"CAM_RESET0",
 			"CAM_VDIG0";
@@ -250,9 +250,9 @@
 		pinctrl-1 = <&pyxis_cam_mclk1_suspend
 			&pyxis_cam_rear_aux_suspend
 			&pyxis_cam_rear_aux_ldo_disable>;
-		gpios = <&tlmm 14 0>, //mclk
-			  <&tlmm 23 0>, //rst
-			  <&pm660l_gpios 3 0>; //vana
+		gpios = <&tlmm 14 0>, /* mclk */
+			  <&tlmm 23 0>, /* rst */
+			  <&pm660l_gpios 3 0>; /* vana */
 		gpio-reset = <1>;
 		gpio-vana = <2>;
 		gpio-req-tbl-num = <0 1 2>;
@@ -297,13 +297,13 @@
 		pinctrl-1 = <&pyxis_cam_mclk2_suspend
 			&pyxis_cam_front_suspend
 			&pyxis_cam_front_mipi_sel_suspend>;
-		gpios = <&tlmm 15 0>, //mclk
-			  <&tlmm 9 0>, //rst
-			  <&tlmm 8 0>, //vana & vdig
-			  <&tlmm 25 0>; //mipi_sel
+		gpios = <&tlmm 15 0>, /* mclk */
+			  <&tlmm 9 0>, /* rst */
+			  <&tlmm 8 0>, /* vana & vdig */
+			  <&tlmm 25 0>; /* mipi_sel */
 		gpio-reset = <1>;
 		gpio-vdig = <2>;
-		gpio-custom1 = <3>; //mipi_sel
+		gpio-custom1 = <3>; /* mipi_sel */
 		gpio-req-tbl-num = <0 1 2 3>;
 		gpio-req-tbl-flags = <1 0 0 0>;
 		gpio-req-tbl-label = "CAMIF_MCLK2",
@@ -348,11 +348,11 @@
 		pinctrl-1 = <&pyxis_cam_mclk3_suspend
 			&pyxis_cam_rear_ultra_suspend
 			&pyxis_cam_rear_ultra_mipi_sel_suspend>;
-		gpios = <&tlmm 16 0>, //mclk
-			  <&tlmm 24 0>, //rst
-			  <&tlmm 27 0>, //vdig
-			  <&tlmm 8 0>, //vana
-			  <&tlmm 25 0>; //mipi_sel
+		gpios = <&tlmm 16 0>, /* mclk */
+			  <&tlmm 24 0>, /* rst */
+			  <&tlmm 27 0>, /* vdig */
+			  <&tlmm 8 0>, /* vana */
+			  <&tlmm 25 0>; /* mipi_sel */
 		gpio-reset = <1>;
 		gpio-vdig = <2>;
 		gpio-vana = <3>;

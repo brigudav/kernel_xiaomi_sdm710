@@ -157,12 +157,7 @@ ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
 		sxr1130-usbc-external-codec-pm660a-mtp-overlay.dtbo \
 		sxr1130-usbc-mtp-overlay.dtbo \
 		sxr1130-usbc-pm660a-mtp-overlay.dtbo \
-		sirius-sdm710-overlay.dtbo \
-		sirius-sdm670-overlay.dtbo \
-		grus-sdm710-overlay.dtbo \
-		grus-sdm712-overlay.dtbo \
-		pyxis-sdm710-overlay.dtbo \
-		vela-sdm710-overlay.dtbo
+		pyxis-sdm710-overlay.dtbo
 
 sdm670-mtp-overlay.dtbo-base := sdm670.dtb
 sdm670-rumi-overlay.dtbo-base := sdm670.dtb
@@ -210,12 +205,7 @@ sxr1130-usbc-external-codec-mtp-overlay.dtbo-base := sxr1130.dtb
 sxr1130-usbc-external-codec-pm660a-mtp-overlay.dtbo-base := sxr1130.dtb
 sxr1130-usbc-mtp-overlay.dtbo-base := sxr1130.dtb
 sxr1130-usbc-pm660a-mtp-overlay.dtbo-base := sxr1130.dtb
-sirius-sdm710-overlay.dtbo-base := sdm710.dtb
-sirius-sdm670-overlay.dtbo-base := sdm670.dtb
-grus-sdm710-overlay.dtbo-base := sdm710.dtb
-grus-sdm712-overlay.dtbo-base := sdm710.dtb
 pyxis-sdm710-overlay.dtbo-base := sdm710.dtb
-vela-sdm710-overlay.dtbo-base := sdm710.dtb
 
 else
 dtb-$(CONFIG_ARCH_SDM670) += sdm670-rumi.dtb \
@@ -259,12 +249,7 @@ dtb-$(CONFIG_ARCH_SDM670) += sdm670-rumi.dtb \
 	sxr1130-usbc-external-codec-pm660a-mtp.dtb \
 	sxr1130-usbc-mtp.dtb \
 	sxr1130-usbc-pm660a-mtp.dtb \
-	sirius-sdm710.dtb \
-	sirius-sdm670.dtb \
-	grus-sdm710.dtb \
-	grus-sdm712.dtb \
-	pyxis-sdm710.dtb \
-	vela-sdm710.dtb
+	pyxis-sdm710.dtb
 endif
 
 ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
