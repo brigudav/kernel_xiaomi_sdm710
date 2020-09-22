@@ -126,3 +126,9 @@ android-recommended-arm.config
 android-recommended-arm64.config
 android-recommended-x86.config
 android-recommended.config
+
+# build-dir
+out/
+
+scripts/ufdt
+kernel.sh
