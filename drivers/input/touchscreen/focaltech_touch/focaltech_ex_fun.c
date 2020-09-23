@@ -315,7 +315,7 @@ static int fts_debug_write(struct file *filp, const char __user *buff, unsigned 
 		break;
 
 	case PROC_HW_RESET:
-		snprintf(tmp, PAGE_SIZE, "%s", writebuf + 1);
+		snprintf(tmp, sizeof(tmp), "%s", writebuf + 1);
 		tmp[buflen - 1] = '\0';
 		if (strncmp(tmp, "focal_driver", 12) == 0) {
 			FTS_INFO("Begin HW Reset");
