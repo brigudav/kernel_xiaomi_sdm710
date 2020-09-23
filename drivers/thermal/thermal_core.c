@@ -976,7 +976,7 @@ polling_delay_show(struct device *dev, struct device_attribute *attr,
 {
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 
-	return snprintf(buf, PAGE_SIZE, "%d\n", tz->polling_delay);
+	return snprintf(buf, sizeof(buf), "%d\n", tz->polling_delay);
 }
 
 static ssize_t
@@ -1003,7 +1003,7 @@ passive_delay_show(struct device *dev, struct device_attribute *attr,
 {
 	struct thermal_zone_device *tz = to_thermal_zone(dev);
 
-	return snprintf(buf, PAGE_SIZE, "%d\n", tz->passive_delay);
+	return snprintf(buf, sizeof(buf), "%d\n", tz->passive_delay);
 }
 
 static ssize_t
@@ -1343,7 +1343,7 @@ thermal_cooling_device_min_state_show(struct device *dev,
 	if (ret)
 		return ret;
 
-	return snprintf(buf, PAGE_SIZE, "%lu\n", state);
+	return snprintf(buf, sizeof(buf), "%lu\n", state);
 }
 
 static ssize_t
@@ -1430,7 +1430,7 @@ thermal_cooling_device_lower_limit_show(struct device *dev,
 	instance =
 	    container_of(attr, struct thermal_instance, lower_attr);
 
-	return snprintf(buf, PAGE_SIZE, "%lu\n", instance->lower);
+	return snprintf(buf, sizeof(buf), "%lu\n", instance->lower);
 }
 
 static ssize_t
@@ -1442,7 +1442,7 @@ thermal_cooling_device_upper_limit_show(struct device *dev,
 	instance =
 	    container_of(attr, struct thermal_instance, upper_attr);
 
-	return snprintf(buf, PAGE_SIZE, "%lu\n", instance->upper);
+	return snprintf(buf, sizeof(buf), "%lu\n", instance->upper);
 }
 
 static ssize_t
@@ -2667,7 +2667,7 @@ thermal_message_of_batt_show(struct device *dev,
 	if (!tm || !tm->message_ok)
 		return -EINVAL;
 
-	return snprintf(buf, PAGE_SIZE, "array_size %s\nscreen_on %s\nscreen_off %s\n",
+	return snprintf(buf, sizeof(buf), "array_size %s\nscreen_on %s\nscreen_off %s\n",
 			tm->batt_array_size, tm->batt_level_screen_on, tm->batt_level_screen_off);
 }
 
@@ -2679,7 +2679,7 @@ static ssize_t
 thermal_screen_state_show(struct device *dev,
 				      struct device_attribute *attr, char *buf)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", sm.screen_state);
+	return snprintf(buf, sizeof(buf), "%d\n", sm.screen_state);
 }
 
 static DEVICE_ATTR(screen_state, 0644,
@@ -2690,7 +2690,7 @@ static ssize_t
 thermal_sconfig_show(struct device *dev,
 				      struct device_attribute *attr, char *buf)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", atomic_read(&switch_mode));
+	return snprintf(buf, sizeof(buf), "%d\n", atomic_read(&switch_mode));
 }
 
 static ssize_t
@@ -2713,7 +2713,7 @@ static ssize_t
 thermal_boost_show(struct device *dev,
 				      struct device_attribute *attr, char *buf)
 {
-	return snprintf(buf, PAGE_SIZE, boost_buf);
+	return snprintf(buf, sizeof(buf), boost_buf);
 }
 
 static ssize_t
@@ -2721,7 +2721,7 @@ thermal_boost_store(struct device *dev,
 				      struct device_attribute *attr, const char *buf, size_t len)
 {
 	int ret;
-	ret = snprintf(boost_buf, PAGE_SIZE, buf);
+	ret = snprintf(boost_buf, sizeof(boost_buf), buf);
 	return len;
 }
 
@@ -2732,7 +2732,7 @@ static ssize_t
 thermal_temp_state_show(struct device *dev,
 				      struct device_attribute *attr, char *buf)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", atomic_read(&temp_state));
+	return snprintf(buf, sizeof(buf), "%d\n", atomic_read(&temp_state));
 }
 
 static ssize_t
