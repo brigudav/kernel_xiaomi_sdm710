@@ -152,11 +152,6 @@ ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
 		sdm710-pm660a-tasha-codec-cdp-overlay.dtbo \
 		sdm710-aqt1000-cdp-overlay.dtbo \
 		sdm710-pm660a-aqt1000-cdp-overlay.dtbo \
-		sxr1130-usbc-external-codec-cdp-overlay.dtbo \
-		sxr1130-usbc-external-codec-mtp-overlay.dtbo \
-		sxr1130-usbc-external-codec-pm660a-mtp-overlay.dtbo \
-		sxr1130-usbc-mtp-overlay.dtbo \
-		sxr1130-usbc-pm660a-mtp-overlay.dtbo \
 		pyxis-sdm710-overlay.dtbo
 
 sdm670-mtp-overlay.dtbo-base := sdm670.dtb
@@ -200,11 +195,6 @@ sdm710-tasha-codec-cdp-overlay.dtbo-base := sdm710.dtb
 sdm710-pm660a-tasha-codec-cdp-overlay.dtbo-base := sdm710.dtb
 sdm710-aqt1000-cdp-overlay.dtbo-base := sdm710.dtb
 sdm710-pm660a-aqt1000-cdp-overlay.dtbo-base := sdm710.dtb
-sxr1130-usbc-external-codec-cdp-overlay.dtbo-base := sxr1130.dtb
-sxr1130-usbc-external-codec-mtp-overlay.dtbo-base := sxr1130.dtb
-sxr1130-usbc-external-codec-pm660a-mtp-overlay.dtbo-base := sxr1130.dtb
-sxr1130-usbc-mtp-overlay.dtbo-base := sxr1130.dtb
-sxr1130-usbc-pm660a-mtp-overlay.dtbo-base := sxr1130.dtb
 pyxis-sdm710-overlay.dtbo-base := sdm710.dtb
 
 else
@@ -244,11 +234,6 @@ dtb-$(CONFIG_ARCH_SDM670) += sdm670-rumi.dtb \
 	sdm710-usbc-pm660a-mtp.dtb \
 	sdm710-tasha-codec-cdp.dtb \
 	sdm710-pm660a-tasha-codec-cdp.dtb \
-	sxr1130-usbc-external-codec-cdp.dtb \
-	sxr1130-usbc-external-codec-mtp.dtb \
-	sxr1130-usbc-external-codec-pm660a-mtp.dtb \
-	sxr1130-usbc-mtp.dtb \
-	sxr1130-usbc-pm660a-mtp.dtb \
 	pyxis-sdm710.dtb
 endif
 
