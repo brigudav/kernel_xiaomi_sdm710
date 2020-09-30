@@ -60,6 +60,7 @@
 		qcom,mdss-dsi-panel-blackness-level = <3230>;
 		qcom,mdss-dsi-panel-fod-dimlayer-enabled;
 		qcom,mdss-dsi-on-command-tuning;
+		qcom,dispparam-enabled;
 		qcom,mdss-panel-on-dimming-delay = <200>;
 		qcom,mdss-dsi-panel-dc-threshold = <610>;
 
