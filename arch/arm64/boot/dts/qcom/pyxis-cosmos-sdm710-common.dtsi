@@ -89,12 +89,6 @@
 		};
 	};
 
-	xiaomi_touch {
-		status = "ok";
-		compatible = "xiaomi-touch";
-		touch,name = "xiaomi-touch";
-	};
-
 	fingerprint_goodix {
 		compatible = "goodix,fingerprint";
 		goodix,gpio-reset = <&tlmm 80 0x0>;
