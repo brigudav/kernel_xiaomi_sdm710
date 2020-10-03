@@ -230,7 +230,7 @@ static ssize_t fts_fwupdate_show(struct device *dev,
 	struct fts_ts_info *info = dev_get_drvdata(dev);
 
 	/*fwupdate_stat: ERROR code Returned by flashProcedure. */
-	return sprintf(buf, "{ %08X }\n", info->fwupdate_stat);
+	return snprintf(buf, PAGE_SIZE, "{ %08X }\n", info->fwupdate_stat);
 }
 
 /***************************************** UTILITIES (current fw_ver/conf_id, active mode, file fw_ver/conf_id)  ***************************************************/
@@ -268,7 +268,7 @@ static ssize_t fts_mode_active_show(struct device *dev,
 	struct fts_ts_info *info = dev_get_drvdata(dev);
 
 	logError(1, "%s Current mode active = %08X\n", tag, info->mode);
-	return sprintf(buf, "{ %08X }\n", info->mode);
+	return snprintf(buf, PAGE_SIZE, "{ %08X }\n", info->mode);
 }
 
 /**
@@ -1680,21 +1680,21 @@ static ssize_t fts_lockdown_show(struct device *dev,
 	temp_buffer = (u8 *) kmalloc(LOCKDOWN_LENGTH * sizeof(u8), GFP_KERNEL);
 	if (temp_buffer == NULL || numberParameters < 2) {
 		count +=
-		    sprintf(&buf[count], "prepare read lockdown failded\n");
+		    snprintf(&buf[count], PAGE_SIZE, "prepare read lockdown failded\n");
 		return count;
 	}
 	type = typeOfComand[0];
 	size = (int)(typeOfComand[1]);
-	count += sprintf(&buf[count], "read lock down code:\n");
+	count += snprintf(&buf[count], PAGE_SIZE, "read lock down code:\n");
 	ret = readLockDownInfo(temp_buffer, type, size);
 	if (ret < OK) {
-		count += sprintf(&buf[count], "read lockdown failded\n");
+		count += snprintf(&buf[count], PAGE_SIZE, "read lockdown failded\n");
 		goto END;
 	}
 	for (i = 0; i < size; i++) {
-		count += sprintf(&buf[count], "%02X ", temp_buffer[i]);
+		count += snprintf(&buf[count], PAGE_SIZE, "%02X ", temp_buffer[i]);
 	}
-	count += sprintf(&buf[count], "\n");
+	count += snprintf(&buf[count], PAGE_SIZE, "\n");
 
 END:
 	numberParameters = 0;
@@ -2946,7 +2946,7 @@ static irqreturn_t fts_event_handler(int irq, void *ts_info)
 	struct fts_ts_info *info = ts_info;
 	int error = 0, count = 0;
 	unsigned char regAdd = FIFO_CMD_READALL;
-	unsigned char data[FIFO_EVENT_SIZE * FIFO_DEPTH] = { 0 };
+	unsigned char data[FIFO_EVENT_SIZE * FIFO_DEPTH] = {0};
 	unsigned char eventId;
 	const unsigned char EVENTS_REMAINING_POS = 7;
 	const unsigned char EVENTS_REMAINING_MASK = 0x1F;
@@ -2963,7 +2963,7 @@ static irqreturn_t fts_event_handler(int irq, void *ts_info)
 							FIFO_DEPTH - 1 : events_remaining;
 
 	if (error == OK && events_remaining > 0) {
-		error = fts_writeReadU8UX(regAdd, 0 , 0, &data[FIFO_EVENT_SIZE],
+		error = fts_writeReadU8UX(regAdd, 0, 0, &data[FIFO_EVENT_SIZE],
 									FIFO_EVENT_SIZE * events_remaining,
 									DUMMY_FIFO);
 	}
@@ -3063,8 +3063,7 @@ static const char *fts_get_limit(struct fts_ts_info *info)
 int fts_fw_update(struct fts_ts_info *info, const char *fw_name, int force)
 {
 
-	u8 error_to_search[4] =
-	    { EVT_TYPE_ERROR_CRC_CX_HEAD, EVT_TYPE_ERROR_CRC_CX,
+	u8 error_to_search[4] = {EVT_TYPE_ERROR_CRC_CX_HEAD, EVT_TYPE_ERROR_CRC_CX,
 		EVT_TYPE_ERROR_CRC_CX_SUB_HEAD, EVT_TYPE_ERROR_CRC_CX_SUB
 	};
 	int retval = 0;
@@ -3109,8 +3108,7 @@ int fts_fw_update(struct fts_ts_info *info, const char *fw_name, int force)
 				 "%s %s: firmware update failed and retry! ERROR %08X\n",
 				 tag, __func__, retval);
 			fts_chip_powercycle(info);
-			retval1 =
-			    flashProcedure(PATH_FILE_FW, crc_status, keep_cx);
+			retval1 = flashProcedure(PATH_FILE_FW, crc_status, keep_cx);
 			if ((retval1 & 0xFF000000) == ERROR_FLASH_PROCEDURE) {
 				logError(1,
 					 "%s %s: firmware update failed again!  ERROR %08X\n",
@@ -3212,12 +3210,10 @@ int fts_fw_update(struct fts_ts_info *info, const char *fw_name, int force)
 */
 static void fts_fw_update_auto(struct work_struct *work)
 {
-
 	struct delayed_work *fwu_work =
 	    container_of(work, struct delayed_work, work);
 	struct fts_ts_info *info =
 	    container_of(fwu_work, struct fts_ts_info, fwu_work);
-
 	fts_fw_update(info, NULL, 0);
 }
 #endif
@@ -3483,7 +3479,7 @@ static int fts_mode_handler(struct fts_ts_info *info, int force)
 			res = enterGestureMode(isSystemResettedDown());
 			if (res >= OK) {
 				fromIDtoMask(FEAT_SEL_GESTURE,
-					     (u8 *) & info->mode,
+					     (u8 *)&info->mode,
 					     sizeof(info->mode));
 				MODE_LOW_POWER(info->mode, 0);
 			} else {
@@ -3515,7 +3511,7 @@ static int fts_mode_handler(struct fts_ts_info *info, int force)
 
 			if (ret >= OK && info->glove_enabled == FEAT_ENABLE) {
 				fromIDtoMask(FEAT_SEL_GLOVE,
-					     (u8 *) & info->mode,
+					     (u8 *)&info->mode,
 					     sizeof(info->mode));
 				logError(1, "%s %s: GLOVE_MODE Enabled! \n",
 					 tag, __func__);
@@ -3543,7 +3539,7 @@ static int fts_mode_handler(struct fts_ts_info *info, int force)
 
 			if (ret >= OK && info->cover_enabled == FEAT_ENABLE) {
 				fromIDtoMask(FEAT_SEL_COVER,
-					     (u8 *) & info->mode,
+					     (u8 *)&info->mode,
 					     sizeof(info->mode));
 				logError(1, "%s %s: COVER_MODE Enabled! \n",
 					 tag, __func__);
@@ -3571,7 +3567,7 @@ static int fts_mode_handler(struct fts_ts_info *info, int force)
 
 			if (ret >= OK && info->charger_enabled == FEAT_ENABLE) {
 				fromIDtoMask(FEAT_SEL_CHARGER,
-					     (u8 *) & info->mode,
+					     (u8 *)&info->mode,
 					     sizeof(info->mode));
 				logError(1, "%s %s: CHARGER_MODE Enabled! \n",
 					 tag, __func__);
@@ -3598,7 +3594,7 @@ static int fts_mode_handler(struct fts_ts_info *info, int force)
 			res |= ret;
 
 			if (ret >= OK && info->grip_enabled == FEAT_ENABLE) {
-				fromIDtoMask(FEAT_SEL_GRIP, (u8 *) & info->mode,
+				fromIDtoMask(FEAT_SEL_GRIP, (u8 *)&info->mode,
 					     sizeof(info->mode));
 				logError(1, "%s %s: GRIP_MODE Enabled! \n", tag,
 					 __func__);
@@ -4011,7 +4007,7 @@ static int parse_dt(struct device *dev, struct fts_hw_platform_data *bdata)
 
 	retval =
 	    of_property_read_u32(np, "fts,config-array-size",
-				 (u32 *) & bdata->config_array_size);
+				 (u32 *)&bdata->config_array_size);
 
 	if (retval) {
 		logError(1, "%s Unable to get array size\n", tag);
@@ -4076,10 +4072,8 @@ static int parse_dt(struct device *dev, struct fts_hw_platform_data *bdata)
 			logError(1, "%s %s:limit_name: %s", tag, __func__,
 				 config_info->fts_limit_name);
 		}
-
 		config_info++;
 	}
-
 	return OK;
 }
 
@@ -4286,8 +4280,8 @@ static int fts_i2c_test(void)
 	return FTS_RESULT_PASS;
 }
 
-static ssize_t fts_selftest_read(struct file *file, char __user * buf,
-				 size_t count, loff_t * pos)
+static ssize_t fts_selftest_read(struct file *file, char __user *buf,
+				 size_t count, loff_t *pos)
 {
 	char tmp[5] = { 0 };
 	int cnt;
@@ -4304,8 +4298,8 @@ static ssize_t fts_selftest_read(struct file *file, char __user * buf,
 	return cnt;
 }
 
-static ssize_t fts_selftest_write(struct file *file, const char __user * buf,
-				  size_t count, loff_t * pos)
+static ssize_t fts_selftest_write(struct file *file, const char __user *buf,
+				  size_t count, loff_t *pos)
 {
 	int retval = 0;
 	char tmp[6];
@@ -4335,8 +4329,8 @@ static const struct file_operations fts_selftest_ops = {
 	.write = fts_selftest_write,
 };
 
-static ssize_t fts_datadump_read(struct file *file, char __user * buf,
-				 size_t count, loff_t * pos)
+static ssize_t fts_datadump_read(struct file *file, char __user *buf,
+				 size_t count, loff_t *pos)
 {
 	int ret = 0, cnt1 = 0, cnt2 = 0, cnt3 = 0;
 	char *tmp;
@@ -4394,8 +4388,8 @@ static const struct file_operations fts_datadump_ops = {
 
 #define TP_INFO_MAX_LENGTH 50
 
-static ssize_t fts_fw_version_read(struct file *file, char __user * buf,
-				   size_t count, loff_t * pos)
+static ssize_t fts_fw_version_read(struct file *file, char __user *buf,
+				   size_t count, loff_t *pos)
 {
 	int cnt = 0, ret = 0;
 	char tmp[TP_INFO_MAX_LENGTH];
@@ -4418,8 +4412,8 @@ static const struct file_operations fts_fw_version_ops = {
 	.read = fts_fw_version_read,
 };
 
-static ssize_t fts_lockdown_info_read(struct file *file, char __user * buf,
-				      size_t count, loff_t * pos)
+static ssize_t fts_lockdown_info_read(struct file *file, char __user *buf,
+				      size_t count, loff_t *pos)
 {
 	int cnt = 0, ret = 0;
 	char tmp[TP_INFO_MAX_LENGTH];
@@ -4517,8 +4511,8 @@ static int tpdbg_open(struct inode *inode, struct file *file)
 	return 0;
 }
 
-static ssize_t tpdbg_read(struct file *file, char __user * buf, size_t size,
-			  loff_t * ppos)
+static ssize_t tpdbg_read(struct file *file, char __user *buf, size_t size,
+			  loff_t *ppos)
 {
 	const char *str = "cmd support as below:\n \
 				\necho \"irq-disable\" or \"irq-enable\" to ctrl irq\n \
@@ -4541,8 +4535,8 @@ static ssize_t tpdbg_read(struct file *file, char __user * buf, size_t size,
 	return len;
 }
 
-static ssize_t tpdbg_write(struct file *file, const char __user * buf,
-			   size_t size, loff_t * ppos)
+static ssize_t tpdbg_write(struct file *file, const char __user *buf,
+			   size_t size, loff_t *ppos)
 {
 	struct fts_ts_info *info = file->private_data;
 	char *cmd = kzalloc(size + 1, GFP_KERNEL);
@@ -4908,13 +4902,13 @@ static int fts_probe(struct spi_device *client)
 		info->fts_tp_class = class_create(THIS_MODULE, "touch");
 
 	info->tp_lockdown_info_proc =
-	    proc_create("tp_lockdown_info", 0, NULL, &fts_lockdown_info_ops);
+	    proc_create("tp_lockdown_info", 0444, NULL, &fts_lockdown_info_ops);
 	info->tp_selftest_proc =
-	    proc_create("tp_selftest", 0, NULL, &fts_selftest_ops);
+	    proc_create("tp_selftest", 0644, NULL, &fts_selftest_ops);
 	info->tp_data_dump_proc =
-	    proc_create("tp_data_dump", 0, NULL, &fts_datadump_ops);
+	    proc_create("tp_data_dump", 0444, NULL, &fts_datadump_ops);
 	info->tp_fw_version_proc =
-	    proc_create("tp_fw_version", 0, NULL, &fts_fw_version_ops);
+	    proc_create("tp_fw_version", 0444, NULL, &fts_fw_version_ops);
 
 #ifndef FW_UPDATE_ON_PROBE
 	queue_delayed_work(info->fwu_workqueue, &info->fwu_work,

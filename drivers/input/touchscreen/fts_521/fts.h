@@ -204,7 +204,7 @@ extern char tag[8];
  * Dispatch event handler
  */
 typedef void (*event_dispatch_handler_t)
- (struct fts_ts_info * info, unsigned char *data);
+ (struct fts_ts_info *info, unsigned char *data);
 
 /**
  * FTS capacitive touch screen device information

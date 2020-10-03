@@ -279,7 +279,7 @@ typedef enum {
 #define EVT_ID_DEBUG						0xE3	/*Debug Info*/
 #define EVT_ID_ERROR						0xF3	/*Error Event*/
 
-#define NUM_EVT_ID							(((EVT_ID_ERROR&0xF0)>>4) + 1)	/*Max number of unique event IDs supported*/
+#define NUM_EVT_ID							(((EVT_ID_ERROR & 0xF0) >> 4) + 1)	/*Max number of unique event IDs supported*/
 /** @}*/
 
 /** @defgroup status_type	 Status Event Types

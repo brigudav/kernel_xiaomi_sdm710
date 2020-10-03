@@ -187,7 +187,7 @@ static Message mess = { 0 };
 * @param pos pointer to the offset where write the data
 * @return NULL if there is no data to print or the pointer to the beginning of the data that need to be printed
 */
-static void *fts_seq_start(struct seq_file *s, loff_t * pos)
+static void *fts_seq_start(struct seq_file *s, loff_t *pos)
 {
 	logError(0,
 		 "%s %s: Entering start(), pos = %Ld limit = %d printed = %d \n",
@@ -197,7 +197,7 @@ static void *fts_seq_start(struct seq_file *s, loff_t * pos)
 		logError(1, "%s %s: No data to print!\n", tag, __func__);
 		driver_test_buff = (u8 *) kmalloc(13 * sizeof(u8), GFP_KERNEL);
 
-		sprintf(driver_test_buff, "{ %08X }\n", ERROR_OP_NOT_ALLOW);
+		snprintf(driver_test_buff, PAGE_SIZE, "{ %08X }\n", ERROR_OP_NOT_ALLOW);
 
 		limit = strlen(driver_test_buff);
 	} else {
@@ -238,7 +238,7 @@ static int fts_seq_show(struct seq_file *s, void *v)
 * @param pos pointer to the offset where write the next data
 * @return NULL if there is no data to print or the pointer to the beginning of the next data that need to be printed
 */
-static void *fts_seq_next(struct seq_file *s, void *v, loff_t * pos)
+static void *fts_seq_next(struct seq_file *s, void *v, loff_t *pos)
 {
 	(*pos) += chunk;
 	chunk = CHUNK_PROC;
@@ -318,8 +318,8 @@ static int fts_open(struct inode *inode, struct file *file)
  * the answer content and format strictly depend on the cmd executed. In general can be: an HEX string or a byte array (e.g in case of 0xF- commands) \n
  * } = end byte \n
  */
-static ssize_t fts_driver_test_write(struct file *file, const char __user * buf,
-				     size_t count, loff_t * pos)
+static ssize_t fts_driver_test_write(struct file *file, const char __user *buf,
+				     size_t count, loff_t *pos)
 {
 	int numberParam = 0;
 	struct fts_ts_info *info = dev_get_drvdata(getDev());
@@ -548,27 +548,27 @@ static ssize_t fts_driver_test_write(struct file *file, const char __user * buf,
 #endif
 
 #ifdef GESTURE_MODE
-			fromIDtoMask(FEAT_SEL_GESTURE, (u8 *) & fileSize, 4);
+			fromIDtoMask(FEAT_SEL_GESTURE, (u8 *)&fileSize, 4);
 #endif
 
 #ifdef GRIP_MODE
-			fromIDtoMask(FEAT_SEL_GRIP, (u8 *) & fileSize, 4);
+			fromIDtoMask(FEAT_SEL_GRIP, (u8 *)&fileSize, 4);
 #endif
 
 #ifdef CHARGER_MODE
-			fromIDtoMask(FEAT_SEL_CHARGER, (u8 *) & fileSize, 4);
+			fromIDtoMask(FEAT_SEL_CHARGER, (u8 *)&fileSize, 4);
 #endif
 
 #ifdef GLOVE_MODE
-			fromIDtoMask(FEAT_SEL_GLOVE, (u8 *) & fileSize, 4);
+			fromIDtoMask(FEAT_SEL_GLOVE, (u8 *)&fileSize, 4);
 #endif
 
 #ifdef COVER_MODE
-			fromIDtoMask(FEAT_SEL_COVER, (u8 *) & fileSize, 4);
+			fromIDtoMask(FEAT_SEL_COVER, (u8 *)&fileSize, 4);
 #endif
 
 #ifdef STYLUS_MODE
-			fromIDtoMask(FEAT_SEL_STYLUS, (u8 *) & fileSize, 4);
+			fromIDtoMask(FEAT_SEL_STYLUS, (u8 *)&fileSize, 4);
 #endif
 
 			u32ToU8_be(fileSize, &readData[4]);
@@ -1645,7 +1645,7 @@ static ssize_t fts_driver_test_write(struct file *file, const char __user * buf,
 			res =
 			    fts_writeReadU8UX(FTS_CMD_HW_REG_R,
 					      ADDR_SIZE_HW_REG, ADDR_DCHIP_ID,
-					      (u8 *) & temp, 2, DUMMY_HW_REG);
+					      (u8 *)&temp, 2, DUMMY_HW_REG);
 			if (res < OK) {
 				logError(1,
 					 "%s Error during I2C test: ERROR %08X! \n",
@@ -1927,7 +1927,7 @@ END_DIAGNOSTIC:
 			goto ERROR;
 			break;
 		case CMD_CHANGE_SAD:
-			res= changeSAD(cmd[1]);
+			res = changeSAD(cmd[1]);
 			break;
 
 		default:
@@ -2415,8 +2415,7 @@ int fts_proc_init(void)
 		goto out;
 	}
 
-	entry =
-	    proc_create(DRIVER_TEST_FILE_NODE, 0777, fts_dir,
+	entry = proc_create(DRIVER_TEST_FILE_NODE, 0644, fts_dir,
 			&fts_driver_test_ops);
 
 	if (entry) {

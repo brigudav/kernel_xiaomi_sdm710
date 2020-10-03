@@ -40,7 +40,7 @@ struct mutex gestureMask_mutex;
  * @param en 0 = enable the gestures set in mask, 1 = disable the gestures set in mask
  * @return OK if success or an error code which specify the type of error encountered
  */
-int updateGestureMask(u8 * mask, int size, int en)
+int updateGestureMask(u8 *mask, int size, int en)
 {
 	u8 temp;
 	int i;
@@ -108,7 +108,7 @@ int updateGestureMask(u8 * mask, int size, int en)
  * @param size dimension in byte of mask. This size can be <= GESTURE_MASK_SIZE. If size < GESTURE_MASK_SIZE the bytes of mask are considering continuos and starting from the less significant byte.
  * @return OK if success or an error code which specify the type of error encountered
  */
-int enableGesture(u8 * mask, int size)
+int enableGesture(u8 *mask, int size)
 {
 	int i, res;
 
@@ -152,7 +152,7 @@ END:
  * @param size dimension in byte of mask. This size can be <= GESTURE_MASK_SIZE. If size < GESTURE_MASK_SIZE the bytes of mask are considering continuos and starting from the less significant byte.
  * @return OK if success or an error code which specify the type of error encountered
  */
-int disableGesture(u8 * mask, int size)
+int disableGesture(u8 *mask, int size)
 {
 	u8 temp;
 	int i, res;
@@ -172,17 +172,17 @@ int disableGesture(u8 * mask, int size)
 			pointer = gesture_mask;
 		} else {
 			i = 0;
-			pointer = (u8 *) & i;
+			pointer = (u8 *)&i;
 		}
 
 		res = setFeatures(FEAT_SEL_GESTURE, pointer, GESTURE_MASK_SIZE);
 		if (res < OK) {
-			logError(1, "%s disableGesture: ERROR %08X \n", tag,
+			logError(1, "%s disableGesture: ERROR %08X\n", tag,
 				 res);
 			goto END;
 		}
 
-		logError(0, "%s disableGesture DONE! \n", tag);
+		logError(0, "%s disableGesture DONE!\n", tag);
 
 		res = OK;
 
@@ -191,7 +191,7 @@ END:
 		return res;
 	} else {
 		logError(1,
-			 "%s disableGesture: Size not valid! %d > %d ERROR %08X \n",
+			 "%s disableGesture: Size not valid! %d > %d ERROR %08X\n",
 			 tag, size, GESTURE_MASK_SIZE);
 		return ERROR_OP_NOT_ALLOW;
 	}
@@ -275,7 +275,7 @@ int isAnyGestureActive(void)
  * @param event pointer to a byte array which contains the gesture event reported by the fw when a gesture is detected
  * @return OK if success or an error code which specify the type of error encountered
  */
-int readGestureCoords(u8 * event)
+int readGestureCoords(u8 *event)
 {
 	int i = 0;
 	u64 address = 0;
@@ -338,7 +338,7 @@ int readGestureCoords(u8 * event)
  * @param y output parameter which will store the address of the array containing the y coordinates
  * @return the number of points (x,y) stored and therefore the size of the x and y array returned.
  */
-int getGestureCoords(u16 ** x, u16 ** y)
+int getGestureCoords(u16 **x, u16 **y)
 {
 	*x = gesture_coordinates_x;
 	*y = gesture_coordinates_y;

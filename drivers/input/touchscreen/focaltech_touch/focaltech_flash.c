@@ -1442,7 +1442,7 @@ static int fts_fwupg_get_ver_in_host(u8 *ver)
 		return -EINVAL;
 	}
 
-	FTS_INFO("fw version offset:%x", upg->func->fwveroff);
+	FTS_INFO("fw version offset:0x%x", upg->func->fwveroff);
 	*ver = upg->fw[upg->func->fwveroff];
 	return 0;
 }
@@ -1480,7 +1480,7 @@ static bool fts_fwupg_need_upgrade(struct i2c_client *client)
 			return false;
 		}
 
-		FTS_INFO("fw version in tp:%x, host:%x", fw_ver_in_tp, fw_ver_in_host);
+		FTS_INFO("fw version in tp:0x%x, host:0x%x", fw_ver_in_tp, fw_ver_in_host);
 		if (fw_ver_in_tp != fw_ver_in_host) {
 			return true;
 		}
@@ -1528,7 +1528,7 @@ int fts_fwupg_upgrade(struct i2c_client *client, struct fts_upgrade *upg)
 					fts_fwupg_reset_in_boot(client);
 				} else {
 					fts_fwupg_get_ver_in_tp(client, &ver);
-					FTS_INFO("success upgrade to fw version %02x", ver);
+					FTS_INFO("success upgrade to fw version 0x%02x", ver);
 					break;
 				}
 			} else {
@@ -1537,7 +1537,7 @@ int fts_fwupg_upgrade(struct i2c_client *client, struct fts_upgrade *upg)
 				break;
 			}
 		} else {
-			FTS_INFO("fw don't need upgrade");
+			FTS_INFO("fw don't need upgrade\n");
 			if (upg->func->param_upgrade) {
 				if (fts_param_need_upgrade(client)) {
 					FTS_INFO("upgrade param area(times:%d)", upgrade_count);
@@ -1546,7 +1546,7 @@ int fts_fwupg_upgrade(struct i2c_client *client, struct fts_upgrade *upg)
 						fts_fwupg_reset_in_boot(client);
 					} else {
 						fts_param_get_ver_in_tp(client, &ver);
-						FTS_INFO("success upgrade to fw param version %02x", ver);
+						FTS_INFO("success upgrade to fw param version 0x%02x", ver);
 						break;
 					}
 				} else {
@@ -1572,23 +1572,23 @@ void fts_fwupg_auto_upgrade(struct fts_ts_data *ts_data)
 	struct i2c_client *client = ts_data->client;
 	struct fts_upgrade *upg = fwupgrade;
 
-	FTS_INFO("********************FTS enter upgrade********************");
+	FTS_INFO("********************FTS enter upgrade********************\n");
 
 	ret = fts_fwupg_upgrade(client, upg);
 	if (ret < 0)
-		FTS_ERROR("**********tp fw(app/param) upgrade failed**********");
+		FTS_ERROR("**********tp fw(app/param) upgrade failed**********\n");
 	else
-		FTS_INFO("**********tp fw(app/param) no upgrade/upgrade success**********");
+		FTS_ERROR("**********tp fw(app/param) no upgrade/upgrade success**********\n");
 
 #if FTS_AUTO_LIC_UPGRADE_EN
 	ret = fts_lic_upgrade(client, upg);
 	if (ret < 0)
-		FTS_ERROR("**********lcd init code upgrade failed**********");
+		FTS_ERROR("**********lcd init code upgrade failed**********\n");
 	else
-		FTS_INFO("**********lcd init code no upgrade/upgrade success**********");
+		FTS_ERROR("**********lcd init code no upgrade/upgrade success**********\n");
 #endif
 
-	FTS_INFO("********************FTS exit upgrade********************");
+	FTS_INFO("********************FTS exit upgrade********************\n");
 }
 
 /*
@@ -1687,7 +1687,7 @@ static int fts_fwupg_get_fw_file(struct fts_ts_data *ts_data)
 		upg->lic = fw->fw_file;
 		upg->lic_length = fw->fw_len;
 
-		FTS_INFO("upgrade fw file len:%x", upg->fw_length);
+		FTS_INFO("upgrade fw file len:0x%x", upg->fw_length);
 		if ((upg->fw_length < FTS_MIN_LEN)
 		    || (upg->fw_length > FTS_MAX_LEN_FILE)) {
 			FTS_ERROR("fw file len(%x) fail", upg->fw_length);
@@ -1761,7 +1761,7 @@ static int fts_get_lockdown_info(struct fts_ts_data *ts_data)
 	}
 
 	for (i = 0; i < FTS_LOCKDOWN_INFO_SIZE; i++)
-		FTS_INFO("Lockdown info = %02x", ts_data->lockdown_info[i]);
+		FTS_INFO("Lockdown info[%d] = 0x%02x", i, ts_data->lockdown_info[i]);
 
 	snprintf(buf, sizeof(buf), "0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
 		(int)ts_data->lockdown_info[0], (int)ts_data->lockdown_info[1],
