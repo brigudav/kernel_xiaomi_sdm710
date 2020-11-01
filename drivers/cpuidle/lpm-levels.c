@@ -1346,10 +1346,6 @@ static void update_history(struct cpuidle_device *dev, int idx)
 static int lpm_cpuidle_enter(struct cpuidle_device *dev,
 		struct cpuidle_driver *drv, int idx)
 {
-	static DEFINE_SPINLOCK(s2idle_lock);
-	static struct cpumask idling_cpus;
-	static int s2idle_sleep_attempts;
-	static bool s2idle_aborted;
 	struct lpm_cpu *cpu = per_cpu(cpu_lpm, dev->cpu);
 	bool success = false;
 	const struct cpumask *cpumask = get_cpu_mask(dev->cpu);
@@ -1387,6 +1383,10 @@ exit:
 static void lpm_cpuidle_freeze(struct cpuidle_device *dev,
 		struct cpuidle_driver *drv, int idx)
 {
+	static DEFINE_SPINLOCK(s2idle_lock);
+	static struct cpumask idling_cpus;
+	static int s2idle_sleep_attempts;
+	static bool s2idle_aborted;
 	struct lpm_cpu *cpu = per_cpu(cpu_lpm, dev->cpu);
 	const struct cpumask *cpumask = get_cpu_mask(dev->cpu);
 	bool success = false;
