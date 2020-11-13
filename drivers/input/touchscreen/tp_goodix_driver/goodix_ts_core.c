@@ -174,13 +174,9 @@ int goodix_register_ext_module(struct goodix_ext_module *module)
 	}
 */
 	pr_debug("goodix_register_ext_module IN");
-
 	INIT_WORK(&module->work, __do_register_ext_module);
 	schedule_work(&module->work);
-
 	pr_debug("goodix_register_ext_module OUT");
-
-
 	return 0;
 }
 EXPORT_SYMBOL_GPL(goodix_register_ext_module);
@@ -232,7 +228,6 @@ int goodix_unregister_ext_module(struct goodix_ext_module *module)
 	if (module->funcs && module->funcs->exit)
 		module->funcs->exit(goodix_modules.core_data, module);
 	goodix_modules.count--;
-
 	pr_debug("Moudle [%s] unregistered",
 			module->name ? module->name : " ");
 	return 0;
@@ -279,7 +274,6 @@ static ssize_t goodix_ext_sysfs_show(struct kobject *kobj,
 
 	if (ext_attr->show)
 		return ext_attr->show(module, buf);
-
 	return -EIO;
 }
 
@@ -291,7 +285,6 @@ static ssize_t goodix_ext_sysfs_store(struct kobject *kobj,
 
 	if (ext_attr->store)
 		return ext_attr->store(module, buf, count);
-
 	return -EIO;
 }
 
@@ -428,7 +421,6 @@ static ssize_t goodix_ts_chip_info_show(struct device  *dev,
 					chip_ver.vid[3], chip_ver.sensor_id);
 		}
 	}
-
 	return cnt;
 }
 
@@ -466,7 +458,6 @@ static ssize_t goodix_ts_config_data_show(struct device *dev,
 		kfree(data);
 		return offset;
 	}
-
 	return -EINVAL;
 }
 
@@ -490,7 +481,6 @@ static ssize_t goodix_ts_reset_store(struct device *dev,
 	if (ts_dev->hw_ops->reset)
 		ts_dev->hw_ops->reset(ts_dev);
 	return count;
-
 }
 
 static ssize_t goodix_ts_read_cfg_show(struct device *dev,
@@ -519,7 +509,6 @@ static ssize_t goodix_ts_read_cfg_show(struct device *dev,
 			offset += snprintf(&buf[offset], 4096 - offset,
 					"%02x ", cfg_buf[i]);
 		}
-
 	}
 	kfree(cfg_buf);
 	return ret;
@@ -572,8 +561,6 @@ static int goodix_ts_convert_0x_data(const u8 *buf,
 	return 0;
 }
 
-
-
 static ssize_t goodix_ts_send_cfg_store(struct device *dev,
 				struct device_attribute *attr,
 				const char *buf,
@@ -595,7 +582,6 @@ static ssize_t goodix_ts_send_cfg_store(struct device *dev,
 		return -EINVAL;
 
 	pr_debug("en:%d", en);
-
 	disable_irq(core_data->irq);
 
 	/*request configuration*/
@@ -638,7 +624,6 @@ exit:
 		release_firmware(cfg_img);
 		cfg_img = NULL;
 	}
-
 	pr_debug("******OUT");
 	return count;
 }
@@ -873,7 +858,6 @@ static int goodix_ts_input_report(struct input_dev *dev,
 		ts_err("touch fw miss the up event");
 		release_all_touches(core_data);
 	}
-
 	return 0;
 }
 
@@ -1012,7 +996,6 @@ int goodix_ts_irq_setup(struct goodix_ts_core *core_data)
 		ts_err("Failed to requeset threaded irq:%d", r);
 	else
 		atomic_set(&core_data->irq_enabled, 1);
-
 	return r;
 }
 
@@ -1034,7 +1017,6 @@ int goodix_ts_irq_enable(struct goodix_ts_core *core_data,
 			disable_irq(core_data->irq);
 		}
 	}
-
 	return 0;
 }
 EXPORT_SYMBOL(goodix_ts_irq_enable);
@@ -1080,8 +1062,6 @@ static int goodix_ts_power_init(struct goodix_ts_core *core_data)
 	} else {
 		pr_debug("vddio name is NULL");
 	}
-
-
 	return r;
 }
 
@@ -1123,9 +1103,7 @@ int goodix_ts_power_on(struct goodix_ts_core *core_data)
 			ts_err("Failed to enable avdd power:%d", r);
 			return r;
 		}
-
 	}
-
 	core_data->power_on = 1;
 	return 0;
 }
@@ -1170,7 +1148,6 @@ int goodix_ts_power_off(struct goodix_ts_core *core_data)
 		if (core_data->avdd_load)
 			regulator_set_load(core_data->avdd, 0);
 	}
-
 	core_data->power_on = 0;
 	return 0;
 }
@@ -1258,7 +1235,6 @@ static int goodix_ts_gpio_setup(struct goodix_ts_core *core_data)
 		ts_err("Failed to request irq gpio, r:%d", r);
 		return r;
 	}
-
 	return 0;
 }
 
@@ -1312,10 +1288,8 @@ static int goodix_input_event(struct input_dev *dev, unsigned int type,
 			return -EINVAL;
 		}
 	}
-
 	return 0;
 }
-
 
 /**
  * goodix_input_set_params - set input parameters
@@ -1418,7 +1392,6 @@ int goodix_ts_input_dev_config(struct goodix_ts_core *core_data)
 		ts_err("Unable to register input device");
 		return r;
 	}
-
 	return 0;
 }
 
@@ -1579,7 +1552,6 @@ static int goodix_esd_notifier_callback(struct notifier_block *nb,
 		goodix_ts_esd_on(ts_esd->ts_core);
 		break;
 	}
-
 	return 0;
 }
 
@@ -1699,7 +1671,6 @@ int goodix_ts_suspend(struct goodix_ts_core *core_data)
 	}
 	mutex_unlock(&goodix_modules.mutex);
 
-
 out:
 	/* release all the touch IDs */
 	release_all_touches(core_data);
@@ -1729,7 +1700,6 @@ int goodix_ts_resume(struct goodix_ts_core *core_data)
 		pr_debug("resumed, skip");
 		goto out;
 	}
-
 
 	mutex_lock(&goodix_modules.mutex);
 	if (!list_empty(&goodix_modules.head)) {
@@ -1778,7 +1748,6 @@ int goodix_ts_resume(struct goodix_ts_core *core_data)
 		}
 	}
 	mutex_unlock(&goodix_modules.mutex);
-
 	goodix_ts_irq_enable(core_data, true);
 out:
 	/*
@@ -1786,7 +1755,6 @@ out:
 	 * and charger detector to turn on the work
 	 */
 	goodix_ts_blocking_notify(NOTIFY_RESUME, NULL);
-
 
 	if (!core_data->fod_pressed) {
 		release_all_touches(core_data);
@@ -1848,7 +1816,6 @@ int goodix_ts_fb_notifier_callback(struct notifier_block *self,
 			queue_work(core_data->event_wq, &core_data->resume_work);
 		}
 	}
-
 	return 0;
 }
 #endif
@@ -1930,7 +1897,6 @@ static int goodix_ts_pm_resume(struct device *dev)
 	}
 	core_data->tp_already_suspend = false;
 	complete(&core_data->pm_resume_completion);
-
 	return 0;
 }
 
@@ -1956,7 +1922,6 @@ static void tpdbg_suspend(struct goodix_ts_core *core_data, bool enable)
 static int tpdbg_open(struct inode *inode, struct file *file)
 {
 	file->private_data = inode->i_private;
-
 	return 0;
 }
 
@@ -2036,7 +2001,6 @@ static const struct file_operations tpdbg_operations = {
 };
 #endif
 
-
 /**
  * goodix_generic_noti_callback - generic notifier callback
  *  for goodix touch notification event.
@@ -2068,7 +2032,6 @@ int goodix_generic_noti_callback(struct notifier_block *self,
 
 exit:
 	return 0;
-
 }
 
 static ssize_t goodix_lockdown_info_read(struct file *file, char __user *buf,
@@ -2183,6 +2146,7 @@ static void gtp_power_supply_work(struct work_struct *work)
 		}
 	}
 }
+
 static int gtp_power_supply_event(struct notifier_block *nb, unsigned long event, void *ptr)
 {
 	struct goodix_ts_core *ts_core = container_of(nb, struct goodix_ts_core, power_supply_notifier);
@@ -2325,7 +2289,6 @@ static int goodix_ts_probe(struct platform_device *pdev)
 		goto out;
 	}
 
-
 	if (core_data->gtp_tp_class == NULL)
 		core_data->gtp_tp_class = class_create(THIS_MODULE, "touch");
 
@@ -2398,7 +2361,6 @@ static struct platform_driver goodix_ts_driver = {
 	.id_table = ts_core_ids,
 };
 
-
 static int __init goodix_ts_core_init(void)
 {
 	pr_debug("Core layer init");
@@ -2410,7 +2372,6 @@ static int __init goodix_ts_core_init(void)
 		mutex_init(&goodix_modules.mutex);
 		init_completion(&goodix_modules.core_comp);
 	}
-
 	goodix_debugfs_init();
 	return platform_driver_register(&goodix_ts_driver);
 }
